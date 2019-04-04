@@ -28,7 +28,7 @@
 
     <h3><strong>Tell me how well you know this soccer teams</strong></h3>
     <h4>Name (Required)</h4>
-    <input type="text" id="name" name="fir"class="form-control" required="">
+    <input type="text" id="name" name="fir" class="form-control" required="">
 
     <h4>Link to Photo Image (Required)</h4>
     <input type="text" id="photo" class="form-control" required="">
@@ -166,57 +166,56 @@
 
   </div>
 
-  <!-- Modal -->
-  <div id="results-modal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">×</button>
-          <h2 class="modal-title"><strong>Best Match</strong></h2>
-        </div>
-        <div class="modal-body">
-          <h2 id="match-name"></h2>
-          <img id="match-img" src="" alt="">
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
+  <div class="modal fade" id="results-modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">Your best match!</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">X</button>
+              </div>
+              <div class="modal-body">
+                      <h2 id="match-name"></h2>
+                      <img id="match-photo" alt="" style="max-height: 300px" style="max-width: 250px">
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+          </div>
       </div>
-
-    </div>
   </div>
-
+ 
 
   <!-- BELOW CODE IS CRITICAL. IT HANDLES HOW FORM DATA IS SENT TO OUR SERVER -->
   <!-- <script type="text/javascript" src="/app/public/clienside-js/friendsMatch.js"></script> -->
- <script>
+  <script>
 
-  // In this code below we create the Front-end JavaScript which "POSTS" our form data to our express server.
+    // In this code below we create the Front-end JavaScript which "POSTS" our form data to our express server.
     // In essence, when the user hits submit, jQuery grabs all of the fields then sends a post request to our api
     // Our api recognizes the route (/api/tables)... and then runs the associated code (found in api-routes.js).
     // In this case the associated code "saves" the data to the table-data.js file or waitinglist-data.js file
 
     $("#submit").on("click", function (event) {
-      
+
       event.preventDefault();
 
       // Here we grab the form elements
       var newSummitResult = {
-        customerName : $("#name").val().trim(),
-        customerPhoto : $("#photo").val().trim(),
-        q1: $("#q1").val().trim(),
-        q2: $("#q2").val().trim(),
-        q3: $("#q3").val().trim(),
-        q4: $("#q4").val().trim(),
-        q5: $("#q5").val().trim(),
-        q6: $("#q6").val().trim(),
-        q7: $("#q7").val().trim(),
-        q8: $("#q8").val().trim(),
-        q9: $("#q9").val().trim(),
-        q10: $("#q10").val().trim(),
+        name: $("#name").val().trim(),
+        photo: $("#photo").val().trim(),
+        scores: [
 
+
+          $("#q1").val().trim(),
+          $("#q2").val().trim(),
+          $("#q3").val().trim(),
+          $("#q4").val().trim(),
+          $("#q5").val().trim(),
+          $("#q6").val().trim(),
+          $("#q7").val().trim(),
+          $("#q8").val().trim(),
+          $("#q9").val().trim(),
+          $("#q10").val().trim(),
+        ]
       };
 
       console.log(newSummitResult);
@@ -226,36 +225,39 @@
       // The callback is the response of the server. In our case, we set up code in api-routes that "returns" true or false
       // depending on if a tables is available or not.
 
-      $.post("/api/friends", newSummitResult,
-        function (data) {
+      $.post("/api/friends", newSummitResult)
+        .then(function (data) {
 
-          // If a table is available... tell user they are booked.
           if (data) {
-            alert("you did it !");
+            // alert("you did it !");
+              $("#match-photo").attr("src", data.photo);
+              $("#match-name").text(data.name);
+              $("#results-modal").modal("toggle");
+           
           }
 
           // If a table is available... tell user they on the waiting list.
           else {
             alert("Sorry please completed the survey");
           }
-
-          // Clear the form when submitting
-          $("#q1").val().trim(),
-            $("#q2").val().trim(),
-            $("#q3").val().trim(),
-            $("#q4").val().trim(),
-            $("#q5").val().trim(),
-            $("#q6").val().trim(),
-            $("#q7").val().trim(),
-            $("#q8").val().trim(),
-            $("#q9").val().trim(),
-            $("#q10").val().trim()
+          $("#name").val("")
+        $("#photo").val("")
+          $("#q1").val("")
+          $("#q2").val("")
+          $("#q3").val("")
+          $("#q4").val("")
+          $("#q5").val("")
+          $("#q6").val("")
+          $("#q7").val("")
+          $("#q8").val("")
+          $("#q9").val("")
+          $("#q10").val("")
 
         });
 
     });
 //Link to the cientside
- </script>
+  </script>
 </body>
 
 </html>

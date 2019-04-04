@@ -20,7 +20,29 @@ module.exports = function(app) {
   // This wil handle the incoming survey results. In addition, it will handle the compatibility logic for the app.
   app.post("/api/friends", function(req, res) {
     console.log(req.body);
+    var userinput = req.body;
+
     //push into the data array
-    res.json(friends);
+    // make a total score  that will be refrence 
+    let match = "" ;
+    let totalScore = 1000;
+     
+      for (let i= 0; i < friends.length; i++) {
+        var diff = 0;
+        
+        for (let j = 0; j < friends[i].scores.length; j++) {
+          diff += Math.abs(parseInt(userinput.scores[j]) - parseInt(friends[i].scores[j]));
+          
+        }
+        if( diff < totalScore )
+         totalScore = diff;
+         match = friends[i];
+
+      }
+
+      
+
+      friends.push(userinput)
+    res.json(match);
   });
 }
