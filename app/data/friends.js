@@ -1,7 +1,7 @@
 // starter json with four to five friends hardcoded 
 
 
-var friendsData = [
+var friends = [
 
     {
         "name":"Mark",
@@ -70,3 +70,5 @@ var friendsData = [
       }
 
 ]
+//  This makes it accessible to other files using require.
+module.exports = friends;

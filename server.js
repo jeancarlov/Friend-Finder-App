@@ -2,6 +2,7 @@
 // Dependencies
 // =============================================================
 var express = require("express");
+var path = require("path"); 
 
 
 // Sets up the Express App
@@ -14,12 +15,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 //  -- middleware -- to use static assets like js and css
-app.use(express.static('public'));  // this is to show that our static is on the public folder
+app.use('/static', express.static(path.join(__dirname, 'public'))) // this is to show that our static is on the public folder
 
 //  Routes for server to respond users vist and request data from different URLs.
 
-var htmlRoutes = require("./routes/htmlRoutes")(app);
-var apiRoutes = require("./routes/apiRoutes")(app);
+
+require("./app/routes/apiRoutes")(app);
+require("./app/routes/htmlRoutes")(app);
+
+// app/routes/apiRoutes.js
 
 
 
